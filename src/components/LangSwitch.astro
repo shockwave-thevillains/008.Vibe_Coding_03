@@ -1,0 +1,57 @@
+---
+import { langs, languages, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+}
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+---
+<ul class="langs" aria-label={t('lang.label')}>
+  {
+    langs.map((l) => (
+      <li>
+        {l === lang ? (
+          <span class="lang current" aria-current="true" title={t('lang.current')}>
+            <abbr title={languages[l]}>{l.toUpperCase()}</abbr>
+          </span>
+        ) : (
+          <a class="lang" href={alternates[l]} hreflang={l} lang={l} data-lang-switch title={languages[l]}>
+            {l.toUpperCase()}
+            <span class="visually-hidden">{languages[l]}</span>
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .langs {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 0.25rem;
+  }
+  .lang {
+    display: inline-block;
+    padding: 0.3rem 0.45rem;
+    color: var(--text-faint);
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-micro) var(--ease-in-out), border-color var(--dur-glow) var(--ease-expo-out);
+  }
+  a.lang:hover,
+  a.lang:focus-visible {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .current {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  abbr {
+    text-decoration: none;
+  }
+</style>

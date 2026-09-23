@@ -1,0 +1,57 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const repo = 'https://github.com/shockwave-thevillains/008.Vibe_Coding_03';
+---
+<footer class="site-footer">
+  <div class="wrap grid">
+    <p class="note">{t('footer.note')}</p>
+    <p class="data">{t('footer.data')}</p>
+    <ul class="links">
+      <li><a class="link" href={`${repo}/blob/HEAD/CREDITS.md`} rel="noopener">{t('footer.credits')}</a></li>
+      <li><a class="link" href={repo} rel="noopener">{t('footer.source')}</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: var(--space-xl);
+    padding-block: var(--space-l);
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: 2fr 2fr 1fr;
+      align-items: start;
+    }
+  }
+  .note,
+  .data {
+    max-width: 44ch;
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .links a {
+    color: var(--text);
+  }
+</style>

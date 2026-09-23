@@ -1,0 +1,209 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import KeyEvents from '../../../components/KeyEvents.astro';
+import EraNav from '../../../components/EraNav.astro';
+import EraFigure from '../../../components/EraFigure.astro';
+import TimeRange from '../../../components/TimeRange.astro';
+import { langs, type Lang } from '../../../i18n/ui';
+import { useTranslations } from '../../../i18n/utils';
+import { getEras, eraSlug, type Era } from '../../../lib/eras';
+import { eraUrl, homeUrl, erasIndexUrl } from '../../../lib/url';
+import { humanSpan } from '../../../lib/time';
+import { pageTransition, sharedTransition } from '../../../styles/motion';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of langs) {
+    const eras = await getEras(lang);
+    eras.forEach((era, i) => {
+      paths.push({
+        params: { lang, slug: eraSlug(era) },
+        props: { era, prev: eras[i - 1], next: eras[i + 1], index: i, total: eras.length },
+      });
+    });
+  }
+  return paths;
+}
+
+interface Props {
+  era: Era;
+  prev?: Era;
+  next?: Era;
+  index: number;
+  total: number;
+}
+const { era, prev, next, index, total } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const slug = eraSlug(era);
+const t = useTranslations(lang);
+const { Content } = await render(era);
+const d = era.data;
+const chapter = String(index + 1).padStart(2, '0');
+const link = (e?: Era) =>
+  e ? { href: eraUrl(lang, eraSlug(e)), title: e.data.title, accent: e.data.accentColor } : undefined;
+---
+<BaseLayout lang={lang} title={d.title} description={d.summary} accent={d.accentColor} ogType="article">
+  <article class="era" data-era-page>
+    <header class="hero wrap" transition:animate={pageTransition}>
+      <Breadcrumb
+        label={t('breadcrumb.label')}
+        items={[
+          { href: homeUrl(lang), label: t('nav.home') },
+          { href: erasIndexUrl(lang), label: t('nav.eras') },
+          { label: d.title },
+        ]}
+      />
+      <p class="chapter eyebrow">
+        <span class="mono">{t('era.chapter')} {chapter}</span>{' '}
+        <span class="of">/ {String(total).padStart(2, '0')}</span>
+      </p>
+      <h1 class="title display" transition:name={`era-title-${slug}`} transition:animate={sharedTransition}>
+        {d.title}
+      </h1>
+      <div class="range-row" transition:name={`era-range-${slug}`} transition:animate={sharedTransition}>
+        <TimeRange lang={lang} start={d.startYearsAgo} end={d.endYearsAgo} startLabel={d.startLabel} endLabel={d.endLabel} />
+      </div>
+      <p class="lead">{d.summary}</p>
+    </header>
+
+    <div class="body wrap" transition:animate={pageTransition}>
+      <aside class="meta">
+        <dl>
+          <div>
+            <dt class="eyebrow">{t('era.range')}</dt>
+            <dd>{d.startLabel} – {d.endLabel}</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">{t('eras.span')}</dt>
+            <dd class="mono">≈ {humanSpan(d.startYearsAgo - d.endYearsAgo, lang)}</dd>
+          </div>
+        </dl>
+        <a class="line-link back" href={homeUrl(lang, slug)}>{t('era.backToHome')}</a>
+        {d.image && <EraFigure lang={lang} image={d.image} priority />}
+      </aside>
+
+      <div class="main-col">
+        {d.needsReview && (
+          <p class="review" role="note">
+            {t('era.needsReview')}
+          </p>
+        )}
+        <div class="prose">
+          <Content />
+        </div>
+
+        <KeyEvents heading={t('era.keyEvents')} events={d.keyEvents} />
+
+        <section class="sources" aria-labelledby="sources-heading">
+          <h2 id="sources-heading" class="eyebrow">{t('era.sources')}</h2>
+          <ol>
+            {d.sources.map((s) => (
+              <li>
+                <a class="link" href={s.url} rel="noopener">{s.title}</a>
+              </li>
+            ))}
+          </ol>
+          {d.order <= 6 && <p class="note">{t('era.sourcesNote')}</p>}
+        </section>
+      </div>
+    </div>
+
+    <EraNav lang={lang} prev={link(prev)} next={link(next)} />
+  </article>
+</BaseLayout>
+
+<style>
+  .era {
+    padding-top: clamp(6rem, 12vw, 9rem);
+  }
+  .hero {
+    display: grid;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-bottom: var(--space-l);
+  }
+  .chapter {
+    margin-top: var(--space-m);
+  }
+  .of {
+    color: var(--text-faint);
+  }
+  .title {
+    font-size: var(--step-5);
+    max-width: 14ch;
+    text-shadow: 0 0 0.6em color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  .lead {
+    max-width: 46ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--text);
+    justify-self: end;
+    border-left: 1px solid var(--accent);
+    padding-left: 1.25rem;
+  }
+  .body {
+    display: grid;
+    gap: var(--space-l);
+    padding-bottom: var(--space-xl);
+  }
+  @media (min-width: 64rem) {
+    .body {
+      grid-template-columns: minmax(16rem, 5fr) 7fr;
+      gap: clamp(3rem, 6vw, 8rem);
+    }
+    .meta {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+  .meta {
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+  dl {
+    display: grid;
+    gap: 1.25rem;
+  }
+  dd {
+    margin-top: 0.3rem;
+  }
+  .main-col {
+    display: grid;
+    gap: var(--space-l);
+    min-width: 0;
+  }
+  .review {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    border: 1px solid var(--line-strong);
+    padding: 0.9rem 1.1rem;
+    max-width: var(--measure);
+  }
+  .sources ol {
+    margin-top: 1.25rem;
+    padding-left: 1.4rem;
+    display: grid;
+    gap: 0.6rem;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    max-width: var(--measure);
+  }
+  .sources a {
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .sources li::marker {
+    font-family: var(--font-mono);
+    color: var(--text-faint);
+  }
+  .note {
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    max-width: var(--measure);
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import type { Lang } from '../i18n/ui';
+import { timeMode, counterValue, counterText, counterUnit } from '../lib/time';
+
+interface Props {
+  lang: Lang;
+  start: number;
+  end: number;
+  startLabel: string;
+  endLabel: string;
+  /** Aktifkan counter animasi di beranda. */
+  counter?: boolean;
+}
+const { lang, start, end, startLabel, endLabel, counter = false } = Astro.props;
+const mode = timeMode(start);
+const from = counterValue(start, mode);
+const to = counterValue(end, mode);
+const endIsNow = end === 0;
+const fromUnit = counterUnit(from, mode, lang);
+const toUnit = counterUnit(to, mode, lang, endIsNow);
+const sameUnit = mode === 'ago' || fromUnit === toUnit;
+---
+<p class="time-range">
+  <span class="visually-hidden">{startLabel} – {endLabel}</span>
+  <span class="num mono glow" aria-hidden="true">
+    <span
+      class="value"
+      data-counter={counter ? '' : undefined}
+      data-from={from}
+      data-to={to}
+      data-mode={mode}
+      data-lang={lang}
+    >{counterText(from, mode, lang)}</span>{!sameUnit && <span class="unit"> {fromUnit}</span>}
+  </span>
+  <span class="arrow" aria-hidden="true">→</span>
+  <span class="end mono" aria-hidden="true">
+    {endIsNow ? toUnit : counterText(to, mode, lang)}{!endIsNow && <span class="unit"> {toUnit}</span>}
+  </span>
+</p>
+
+<style>
+  .time-range {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+  }
+  .num {
+    font-size: var(--step-3);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .unit {
+    font-size: 0.45em;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-shadow: none;
+  }
+  .arrow {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+  }
+  .end {
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .end .unit {
+    font-size: 0.8em;
+  }
+</style>

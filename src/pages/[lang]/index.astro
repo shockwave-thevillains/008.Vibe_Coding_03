@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { langs, type Lang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+import { getEras, eraSlug } from '../../lib/eras';
+import { eraUrl } from '../../lib/url';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const eras = await getEras(lang);
+---
+<BaseLayout lang={lang}>
+  <div class="wrap" style="padding-top:8rem">
+    <h1 class="display">{t('home.title.line1')} {t('home.title.line2')}</h1>
+    <ul>{eras.map((e) => <li id={eraSlug(e)}><a href={eraUrl(lang, eraSlug(e))}>{e.data.title}</a></li>)}</ul>
+  </div>
+</BaseLayout>

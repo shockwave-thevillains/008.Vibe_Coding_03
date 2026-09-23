@@ -1,0 +1,79 @@
+---
+interface Props {
+  heading: string;
+  events: { when: string; title: string; description: string }[];
+}
+const { heading, events } = Astro.props;
+---
+<section class="events" aria-labelledby="key-events-heading">
+  <h2 id="key-events-heading" class="eyebrow">{heading}</h2>
+  <ol class="timeline">
+    {
+      events.map((e) => (
+        <li class="event" data-reveal>
+          <p class="when mono">{e.when}</p>
+          <h3 class="title">{e.title}</h3>
+          <p class="desc">{e.description}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .events {
+    display: grid;
+    gap: var(--space-m);
+  }
+  .timeline {
+    position: relative;
+    list-style: none;
+    padding: 0 0 0 2rem;
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+  /* garis vertikal bercahaya warna era */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--accent) 8%, var(--accent) 92%, transparent);
+    box-shadow: var(--glow-line);
+  }
+  .event {
+    position: relative;
+    max-width: 52ch;
+  }
+  .event::before {
+    content: '';
+    position: absolute;
+    left: calc(-2rem - 3px);
+    top: 0.55rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 1px solid var(--accent);
+    transition: background-color var(--dur-glow) var(--ease-expo-out), box-shadow var(--dur-glow) var(--ease-expo-out);
+  }
+  .event:hover::before {
+    background: var(--accent);
+    box-shadow: var(--glow-line);
+  }
+  .when {
+    font-size: var(--step--1);
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .title {
+    font-size: var(--step-1);
+    margin-top: 0.35rem;
+  }
+  .desc {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+  }
+</style>

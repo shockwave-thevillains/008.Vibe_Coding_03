@@ -1,0 +1,53 @@
+/* --accent didaftarkan sebagai <color> agar bisa ditransisikan halus antar-era. */
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f5a25d;
+}
+
+/* Token desain. Warna aksen per era diset lewat --accent (inline style / JS). */
+:root {
+  color-scheme: dark;
+
+  /* Palet */
+  --black: #000000;
+  --ink-0: #050505;
+  --ink-1: #0a0a0a;
+  --ink-2: #111111;
+  --line: rgba(237, 234, 227, 0.12);
+  --line-strong: rgba(237, 234, 227, 0.24);
+  --text: #edeae3; /* putih hangat, sedikit redup */
+  --text-muted: #a9a59c; /* kontras ≈ 8.3:1 di atas #000 */
+  --text-faint: #858178; /* kontras ≈ 5.2:1 di atas #000, hanya untuk label kecil */
+  --accent: #f5a25d;
+
+  /* Tipografi */
+  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', 'Didot', 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3.5rem);
+  --step-4: clamp(2.75rem, 1.9rem + 4.2vw, 6rem);
+  --step-5: clamp(3.5rem, 2rem + 8vw, 11rem);
+
+  /* Ruang */
+  --gutter: clamp(1rem, 0.6rem + 2vw, 3rem);
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 2rem;
+  --space-l: clamp(3rem, 2rem + 4vw, 6rem);
+  --space-xl: clamp(5rem, 3rem + 8vw, 12rem);
+  --measure: 64ch;
+
+  /* Glow — dipakai hemat */
+  --accent-soft: color-mix(in srgb, var(--accent) 35%, transparent);
+  --accent-faint: color-mix(in srgb, var(--accent) 12%, transparent);
+  --glow-text: 0 0 0.35em color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 1.4em color-mix(in srgb, var(--accent) 22%, transparent);
+  --glow-line: 0 0 6px color-mix(in srgb, var(--accent) 70%, transparent),
+    0 0 18px color-mix(in srgb, var(--accent) 32%, transparent);
+}
