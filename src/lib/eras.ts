@@ -32,3 +32,25 @@ export const globeStateBySlug: Record<string, number> = {
 export function globeStateFor(slug: string): number {
   return globeStateBySlug[slug] ?? 0;
 }
+
+/** Sudut rotasi globe (radian) untuk gambar statis tiap era — memperlihatkan wilayah yang relevan. */
+export const stillRotationBySlug: Record<string, number> = {
+  trias: 4.5,
+  jura: 4.5,
+  kapur: 4.4,
+  paleogen: 3.4,
+  neogen: 4.2,
+  pleistosen: 2.6,
+  neolitik: 3.7,
+  'peradaban-awal': 4.0,
+  klasik: 3.9,
+  'abad-pertengahan': 2.9,
+  renaisans: 4.5,
+  'revolusi-industri': 4.6,
+  'abad-20': 5.3,
+  'era-digital': 2.7,
+  'era-ai': 4.3,
+};
+
+/** Era yang menampilkan lampu kota & busur koneksi di globe. */
+export const citiesEras = new Set(['era-digital', 'era-ai']);

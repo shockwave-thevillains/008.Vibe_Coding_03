@@ -1,0 +1,39 @@
+---
+/**
+ * Halaman DEV-ONLY untuk memotret globe statis per era (scripts/render-globe.mjs).
+ * Tidak ikut ter-build di produksi (getStaticPaths kosong).
+ */
+import { getEras, eraSlug, globeStateFor, stillRotationBySlug, citiesEras } from '../../../lib/eras';
+import paleoUrl from '../../../data/globe/paleo.json?url';
+
+export async function getStaticPaths() {
+  if (import.meta.env.PROD) return [];
+  const eras = await getEras('id');
+  return eras.map((e) => ({ params: { slug: eraSlug(e) }, props: { era: e } }));
+}
+const { era } = Astro.props;
+const slug = eraSlug(era);
+const ma = globeStateFor(slug);
+const cities = citiesEras.has(slug);
+const rot = stillRotationBySlug[slug] ?? 4.4;
+---
+<!doctype html>
+<html lang="id" style="background:#000">
+  <head><meta charset="utf-8" /><title>globe {slug}</title></head>
+  <body style="margin:0;background:#000">
+    <canvas id="c" style="width:1200px;height:1200px;display:block" data-url={paleoUrl} data-ma={ma} data-accent={era.data.accentColor} data-cities={cities ? '1' : '0'} data-rot={rot}></canvas>
+    <script>
+      import { Globe } from '../../../scripts/globe/Globe';
+      import { decodeGlobe } from '../../../scripts/globe/data';
+      const c = document.getElementById('c') as HTMLCanvasElement;
+      const raw = await (await fetch(c.dataset.url!)).json();
+      const data = decodeGlobe(raw);
+      const idx = data.states.findIndex((s) => s.ma === Number(c.dataset.ma));
+      const g = new Globe({ canvas: c, states: data.states, n: data.n, still: true, accent: c.dataset.accent });
+      g.setState(idx, c.dataset.accent!, c.dataset.cities === '1', true);
+      g.setRotation(Number(new URLSearchParams(location.search).get('rot') ?? c.dataset.rot));
+      g.renderOnce();
+      document.body.dataset.ready = '1';
+    </script>
+  </body>
+</html>

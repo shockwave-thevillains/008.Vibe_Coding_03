@@ -34,3 +34,4 @@ Thumbs.db
 /tmp/
 *.log
 __pycache__/
+scripts/globe/.cache/

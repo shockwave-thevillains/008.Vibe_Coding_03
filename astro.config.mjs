@@ -8,6 +8,7 @@ export default defineConfig({
   site: 'https://shockwave-thevillains.github.io',
   base: '/008.Vibe_Coding_03',
   trailingSlash: 'always',
+  devToolbar: { enabled: false },
   i18n: {
     locales: ['id', 'en'],
     defaultLocale: 'id',
