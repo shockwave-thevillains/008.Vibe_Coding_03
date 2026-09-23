@@ -26,6 +26,12 @@ keyEvents:
     title: "The Phoenician alphabet"
     description: "This 22-letter consonant script became the ancestor of many alphabets, including Greek and Latin."
 accentColor: "#F09A6B"
+image:
+  src: "../../../assets/globe/peradaban-awal.jpg"
+  alt: "Glowing terracotta globe with modern coastlines, facing Africa and western Asia."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "The Metropolitan Museum of Art — The Origins of Writing"
     url: "https://www.metmuseum.org/essays/the-origins-of-writing"

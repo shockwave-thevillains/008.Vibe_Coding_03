@@ -20,6 +20,12 @@ keyEvents:
     title: "Archaeopteryx"
     description: "Fossils from Germany's Solnhofen limestone show a feathered animal with wings, teeth and a bony tail: a bridge between dinosaurs and birds."
 accentColor: "#8EEA6A"
+image:
+  src: "../../../assets/globe/jura.jpg"
+  alt: "Glowing green globe with coastlines reconstructed for about 170 million years ago, as Pangaea begins to split."
+  credit: "Rendered for Evolusi Dunia; palaeogeographic reconstruction from the Müller et al. (2019) plate model, EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

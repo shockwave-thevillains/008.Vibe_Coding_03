@@ -26,6 +26,12 @@ keyEvents:
     title: "Rahang Ledi-Geraru"
     description: "Fragmen rahang dari Etiopia ini dianggap bukti tertua genus Homo."
 accentColor: "#D7E36A"
+image:
+  src: "../../../assets/globe/neogen.jpg"
+  alt: "Globe bercahaya hijau kekuningan dengan garis pantai rekonstruksi sekitar 15 juta tahun lalu, berpusat di Afrika."
+  credit: "Render Evolusi Dunia; rekonstruksi paleogeografi dari model lempeng Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

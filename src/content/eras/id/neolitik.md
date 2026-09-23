@@ -23,6 +23,12 @@ keyEvents:
     title: "Padi dan tembikar di Sulawesi"
     description: "Di lembah Karama, Sulawesi Barat, fitolit padi dan tembikar berslip merah menandai kedatangan budaya Neolitik."
 accentColor: "#EBC47A"
+image:
+  src: "../../../assets/globe/neolitik.jpg"
+  alt: "Globe bercahaya kuning gandum dengan garis pantai modern, menghadap Asia Barat dan Afrika."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "UNESCO World Heritage Centre — Göbekli Tepe"
     url: "https://whc.unesco.org/en/list/1572"

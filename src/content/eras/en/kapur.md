@@ -23,6 +23,12 @@ keyEvents:
     title: "The Chicxulub impact"
     description: "An asteroid about 10 km wide struck the Yucatán Peninsula, leaving a crater some 180 km across. Around 75% of species died out, including all non-bird dinosaurs."
 accentColor: "#FF7A59"
+image:
+  src: "../../../assets/globe/kapur.jpg"
+  alt: "Glowing ember-red globe with coastlines reconstructed for about 100 million years ago; Africa and South America have parted."
+  credit: "Rendered for Evolusi Dunia; palaeogeographic reconstruction from the Müller et al. (2019) plate model, EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

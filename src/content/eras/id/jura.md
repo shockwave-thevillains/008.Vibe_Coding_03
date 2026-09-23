@@ -20,6 +20,12 @@ keyEvents:
     title: "Archaeopteryx"
     description: "Fosil dari batu gamping Solnhofen, Jerman, memperlihatkan hewan berbulu dengan sayap, gigi, dan ekor bertulang: jembatan antara dinosaurus dan burung."
 accentColor: "#8EEA6A"
+image:
+  src: "../../../assets/globe/jura.jpg"
+  alt: "Globe bercahaya hijau dengan garis pantai rekonstruksi sekitar 170 juta tahun lalu, saat Pangea mulai terbelah."
+  credit: "Render Evolusi Dunia; rekonstruksi paleogeografi dari model lempeng Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

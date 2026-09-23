@@ -26,6 +26,12 @@ keyEvents:
     title: "Nobel prizes and regulation"
     description: "The 2024 Nobel prizes in physics and chemistry recognised neural networks and protein structure prediction; the EU AI Act entered into force on 1 August 2024."
 accentColor: "#D98BFF"
+image:
+  src: "../../../assets/globe/era-ai.jpg"
+  alt: "Glowing muted-magenta globe with modern coastlines, city lights and connection arcs over Africa and Europe."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Turing (1950), Computing Machinery and Intelligence, Mind"
     url: "https://doi.org/10.1093/mind/LIX.236.433"

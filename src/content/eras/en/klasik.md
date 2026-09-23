@@ -26,6 +26,12 @@ keyEvents:
     title: "The end of the Western Roman Empire"
     description: "Odoacer deposed Romulus Augustulus, the last emperor in the West."
 accentColor: "#74D1C7"
+image:
+  src: "../../../assets/globe/klasik.jpg"
+  alt: "Glowing patina-green globe with modern coastlines, facing Africa, western Asia and the Indian Ocean."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "World History Encyclopedia — Timeline: Athenian Democracy"
     url: "https://www.worldhistory.org/timeline/Athenian_Democracy/"

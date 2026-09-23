@@ -23,6 +23,12 @@ keyEvents:
     title: "Last Glacial Maximum"
     description: "Sea level sat about 120 m lower; Sumatra, Java, Borneo and the Malay Peninsula were joined as the Sunda landmass."
 accentColor: "#86D4FF"
+image:
+  src: "../../../assets/globe/pleistosen.jpg"
+  alt: "Glowing ice-blue globe with modern coastlines, facing Southeast Asia, the Indonesian archipelago and Australia."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

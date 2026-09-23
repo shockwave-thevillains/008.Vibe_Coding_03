@@ -1,9 +1,22 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TimeRail from '../../components/home/TimeRail.astro';
 import { langs, type Lang } from '../../i18n/ui';
 import { useTranslations } from '../../i18n/utils';
-import { getEras, eraSlug } from '../../lib/eras';
-import { eraUrl } from '../../lib/url';
+import { getEras, eraSlug, globeStateFor, citiesEras } from '../../lib/eras';
+import { eraUrl, erasIndexUrl } from '../../lib/url';
+import {
+  timeMode,
+  counterValue,
+  counterText,
+  counterUnit,
+  humanSpan,
+  formatNumber,
+  REFERENCE_YEAR,
+} from '../../lib/time';
+import { GLOBE_TIMES } from '../../scripts/globe/states';
+import paleoUrl from '../../data/globe/paleo.json?url';
 
 export function getStaticPaths() {
   return langs.map((lang) => ({ params: { lang } }));
@@ -11,10 +24,486 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const eras = await getEras(lang);
+const first = eras[0];
+const totalYears = first.data.startYearsAgo;
+const sourceCount = new Set(eras.flatMap((e) => e.data.sources.map((s) => s.url))).size;
 ---
-<BaseLayout lang={lang}>
-  <div class="wrap" style="padding-top:8rem">
-    <h1 class="display">{t('home.title.line1')} {t('home.title.line2')}</h1>
-    <ul>{eras.map((e) => <li id={eraSlug(e)}><a href={eraUrl(lang, eraSlug(e))}>{e.data.title}</a></li>)}</ul>
+<BaseLayout lang={lang} accent={first.data.accentColor} bodyClass="is-home">
+  <Fragment slot="head">
+    <script is:inline data-astro-rerun>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash && !window.__edIntroSeen)
+        document.documentElement.classList.add('intro-pending');
+    </script>
+    <noscript>
+      <style is:inline>
+        .globe-stage { display: none !important; }
+        .era-still { display: block !important; }
+      </style>
+    </noscript>
+  </Fragment>
+  <div class="home" data-home data-paleo={paleoUrl}>
+    <div class="globe-stage" aria-hidden="true">
+      <canvas class="globe-canvas" data-globe-canvas></canvas>
+    </div>
+    <div class="globe-drag" data-globe-drag title={t('globe.drag')} aria-hidden="true"></div>
+
+    <TimeRail lang={lang} eras={eras} />
+
+    <section class="intro" data-intro aria-labelledby="home-title">
+      <div class="intro-inner wrap">
+        <p class="eyebrow" data-intro-item>{t('home.eyebrow')}</p>
+        <h1 id="home-title" class="intro-title display">
+          <span class="mask"><span class="line" data-intro-line>{t('home.title.line1')}</span></span>
+          <span class="mask"><span class="line glow-soft" data-intro-line>{t('home.title.line2')}</span></span>
+        </h1>
+        <p class="intro-lead" data-intro-item>{t('home.lead')}</p>
+        {first.data.image && (
+          <figure class="era-still intro-still">
+            <Image src={first.data.image.src} alt={first.data.image.alt} widths={[360, 640, 960]} sizes="(min-width: 64rem) 36vw, 80vw" loading="eager" />
+          </figure>
+        )}
+        <div class="intro-foot" data-intro-item>
+          <span class="scroll-hint mono">{t('home.scrollHint')} <span aria-hidden="true">↓</span></span>
+          <button type="button" class="skip-intro mono" data-skip-intro>{t('home.skipIntro')}</button>
+        </div>
+      </div>
+    </section>
+
+    <ol class="eras" role="list">
+      {
+        eras.map((era, i) => {
+          const d = era.data;
+          const slug = eraSlug(era);
+          const mode = timeMode(d.startYearsAgo);
+          const from = counterValue(d.startYearsAgo, mode);
+          const to = counterValue(d.endYearsAgo, mode);
+          const prev = eras[i - 1];
+          const stateIdx = GLOBE_TIMES.indexOf(globeStateFor(slug));
+          const toNow = d.endYearsAgo === 0;
+          return (
+            <li
+              class="era"
+              id={slug}
+              style={`--c:${d.accentColor}`}
+              data-era
+              data-index={i}
+              data-accent={d.accentColor}
+              data-state={stateIdx}
+              data-cities={citiesEras.has(slug) ? '1' : '0'}
+              data-years={d.startYearsAgo}
+            >
+              <article class="era-inner wrap" aria-labelledby={`t-${slug}`}>
+                <div class="era-text">
+                  {prev && (
+                    <p class="jump mono" data-layer="1" aria-hidden="true">
+                      <span class="jump-line" />
+                      ↓ {t('time.jump', { span: humanSpan(prev.data.startYearsAgo - d.startYearsAgo, lang) })}
+                    </p>
+                  )}
+                  <p class="chapter eyebrow" data-layer="1">
+                    <span class="mono">
+                      {t('era.chapter')} {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span class="of mono">/ {String(eras.length).padStart(2, '0')}</span>
+                  </p>
+                  <h2 id={`t-${slug}`} class="era-title display" transition:name={`era-title-${slug}`}>
+                    <span class="mask">
+                      <span class="line" data-reveal>
+                        {d.title}
+                      </span>
+                    </span>
+                  </h2>
+                  <p class="counter" data-layer="2">
+                    <span class="visually-hidden">
+                      {d.startLabel} – {d.endLabel}
+                    </span>
+                    <span class="counter-num mono" aria-hidden="true">
+                      <span
+                        class="value glow"
+                        data-counter
+                        data-from={from}
+                        data-to={toNow && mode === 'calendar' ? REFERENCE_YEAR : to}
+                        data-mode={mode}
+                        data-lang={lang}
+                        data-unit-bce={t('time.bce')}
+                        data-unit-ce={t('time.ce')}
+                      >
+                        {counterText(from, mode, lang)}
+                      </span>
+                      <span class="unit" data-counter-unit>
+                        {counterUnit(from, mode, lang)}
+                      </span>
+                    </span>
+                  </p>
+                  <p class="range mono" data-layer="2" aria-hidden="true">
+                    {d.startLabel} → {d.endLabel}
+                  </p>
+                  <p class="summary" data-layer="3">
+                    {d.summary}
+                  </p>
+                  <a class="line-link more" href={eraUrl(lang, slug)} data-layer="4">
+                    {t('era.readMore')}
+                    <span class="visually-hidden">: {d.title}</span>
+                  </a>
+                </div>
+                {d.image && (
+                  <figure class="era-still" data-still>
+                    <Image
+                      src={d.image.src}
+                      alt={d.image.alt}
+                      widths={[360, 640, 960]}
+                      sizes="(min-width: 64rem) 36vw, 80vw"
+                      loading="lazy"
+                    />
+                  </figure>
+                )}
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <section class="outro" data-outro aria-labelledby="outro-title">
+      <div class="outro-inner wrap">
+        <p class="eyebrow" data-layer="1">{t('home.outro.eyebrow')}</p>
+        <h2 id="outro-title" class="outro-title display">
+          <span class="mask"><span class="line" data-reveal>{t('home.outro.title')}</span></span>
+        </h2>
+        <p class="outro-body" data-layer="2">{t('home.outro.body')}</p>
+        <dl class="stats" data-layer="3">
+          <div>
+            <dt class="eyebrow">{t('home.outro.stat1')}</dt>
+            <dd class="mono glow">{formatNumber(totalYears, lang)}</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">{t('home.outro.stat2')}</dt>
+            <dd class="mono glow">{eras.length}</dd>
+          </div>
+          <div>
+            <dt class="eyebrow">{t('home.outro.stat3')}</dt>
+            <dd class="mono glow">{sourceCount}</dd>
+          </div>
+        </dl>
+        <a class="line-link" href={erasIndexUrl(lang)} data-layer="4">{t('home.outro.cta')}</a>
+      </div>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .home {
+    position: relative;
+  }
+  /* ---------- Globe (latar tetap) ---------- */
+  .globe-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .globe-canvas {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity var(--dur-reveal) var(--ease-expo-out);
+  }
+  :global(.globe-static) .globe-stage {
+    display: none;
+  }
+  /* Area seret: lingkaran transparan tepat di atas globe, agar teks tetap bisa dipilih/diklik. */
+  .globe-drag {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 68%;
+    top: 50%;
+    width: min(56vw, 76vh);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  :global(.globe-live) .globe-drag {
+    display: block;
+  }
+  :global(.globe-live.is-outro) .globe-drag {
+    display: none;
+  }
+  .globe-drag:global(.is-dragging) {
+    cursor: grabbing;
+  }
+  @media (max-width: 63.99rem) {
+    .globe-drag {
+      left: 50%;
+      top: 26%;
+      width: min(78vw, 42svh);
+    }
+  }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    padding-block: 7rem clamp(3rem, 10vh, 7rem);
+    pointer-events: none;
+  }
+  .intro-inner {
+    display: grid;
+    gap: clamp(1.25rem, 3vh, 2rem);
+  }
+  .intro-inner > * {
+    pointer-events: auto;
+  }
+  .intro-title {
+    font-size: clamp(3.4rem, 1.5rem + 9vw, 12.5rem);
+    line-height: 0.88;
+    display: grid;
+  }
+  .intro-title .line:last-child {
+    padding-left: clamp(1.5rem, 9vw, 10rem);
+    font-style: italic;
+  }
+  .glow-soft {
+    text-shadow: 0 0 0.45em color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  @media (min-width: 64rem) {
+    .intro-still {
+      position: absolute;
+      right: 8vw;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .intro-lead {
+    max-width: 40ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .intro-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2.5rem;
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .skip-intro {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    padding: 0.35rem 0;
+    color: var(--text-muted);
+    letter-spacing: inherit;
+    text-transform: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    transition: color var(--dur-micro) var(--ease-in-out), border-color var(--dur-glow) var(--ease-expo-out);
+  }
+  .skip-intro:hover,
+  .skip-intro:focus-visible {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  :global(.intro-done) .skip-intro {
+    visibility: hidden;
+  }
+
+  /* Keadaan awal intro (layar hitam) sebelum JS mengambil alih; pengaman 3,5 dtk bila JS gagal. */
+  :global(html.intro-pending) [data-intro-line] {
+    transform: translateY(110%);
+    animation: intro-failsafe 1ms 3.5s forwards;
+  }
+  :global(html.intro-pending) [data-intro-item] {
+    opacity: 0;
+    animation: intro-failsafe 1ms 3.5s forwards;
+  }
+  @keyframes intro-failsafe {
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  /* ---------- Mask reveal ---------- */
+  .mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .line {
+    display: block;
+  }
+
+  /* ---------- Era ---------- */
+  .eras {
+    list-style: none;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .era {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-block: 12vh 16vh;
+    pointer-events: none;
+  }
+  .era-inner {
+    display: grid;
+    gap: var(--space-m);
+  }
+  .era-text {
+    display: grid;
+    gap: clamp(0.9rem, 2vh, 1.4rem);
+    max-width: 40rem;
+    padding-left: clamp(1.75rem, 5vw, 6rem);
+    pointer-events: auto;
+  }
+  .chapter {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .of {
+    color: var(--text-faint);
+  }
+  .era-title {
+    font-size: clamp(2.8rem, 1.4rem + 5.6vw, 7.5rem);
+    line-height: 0.95;
+  }
+  .counter-num {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2em 0.6em;
+  }
+  .value {
+    font-size: clamp(2rem, 1.1rem + 3.4vw, 4.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .unit {
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .range {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .summary {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    max-width: 34ch;
+  }
+  .more {
+    justify-self: start;
+  }
+  .era-still {
+    display: none;
+    width: min(80vw, 30rem);
+    justify-self: center;
+  }
+  .era-still :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+  }
+  :global(.globe-static) .era-still {
+    display: block;
+  }
+  @media (min-width: 64rem) {
+    .era-inner {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: center;
+    }
+    .era-still {
+      width: min(36vw, 34rem);
+    }
+  }
+  /* Di layar sempit, globe mengisi bagian atas; teks di bawahnya. */
+  @media (max-width: 63.99rem) {
+    .era {
+      align-items: end;
+      padding-block: 46svh 10svh;
+    }
+    :global(.globe-static) .era {
+      padding-block: 10svh;
+      align-items: center;
+    }
+    :global(.globe-static) .era-still {
+      order: -1;
+    }
+    .era-text {
+      padding-left: 1.25rem;
+    }
+  }
+
+  /* Penanda lompatan waktu antar-section */
+  .jump {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: clamp(0.5rem, 3vh, 2rem);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .jump-line {
+    width: 3rem;
+    height: 1px;
+    background: linear-gradient(to right, var(--c), transparent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--c) 60%, transparent);
+  }
+
+  /* ---------- Outro ---------- */
+  .outro {
+    position: relative;
+    z-index: 1;
+    min-height: 200svh;
+    display: grid;
+    align-items: end;
+    padding-block: 100svh 8rem;
+  }
+  .outro-inner {
+    display: grid;
+    gap: var(--space-m);
+    justify-items: start;
+  }
+  .outro-title {
+    font-size: var(--step-5);
+    max-width: 12ch;
+  }
+  .outro-body {
+    max-width: 52ch;
+    font-size: var(--step-1);
+    line-height: 1.55;
+    justify-self: end;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-m);
+    width: 100%;
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-m);
+  }
+  .stats dd {
+    font-size: var(--step-2);
+    margin-top: 0.4rem;
+  }
+
+  /* Tanpa JS: semua konten langsung terlihat (lihat juga .globe-static). */
+</style>
+

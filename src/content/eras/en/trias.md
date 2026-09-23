@@ -23,6 +23,12 @@ keyEvents:
     title: "The end-Triassic extinction"
     description: "Huge eruptions of the Central Atlantic Magmatic Province, as Pangaea began to split, are linked to the loss of many animal groups. Dinosaurs survived."
 accentColor: "#F5A25D"
+image:
+  src: "../../../assets/globe/trias.jpg"
+  alt: "Glowing amber globe with coastlines reconstructed for about 230 million years ago: nearly all land joined as Pangaea."
+  credit: "Rendered for Evolusi Dunia; palaeogeographic reconstruction from the Müller et al. (2019) plate model, EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

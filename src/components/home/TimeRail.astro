@@ -1,0 +1,179 @@
+---
+import type { Lang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+import { eraSlug, type Era } from '../../lib/eras';
+import { logPosition, humanSpan } from '../../lib/time';
+
+interface Props {
+  lang: Lang;
+  eras: Era[];
+}
+const { lang, eras } = Astro.props;
+const t = useTranslations(lang);
+// Penanda skala: 100 jt, 1 jt, 10 rb, 100 tahun lalu
+const marks = [1e8, 1e6, 1e4, 1e2].map((y) => ({ y, pos: logPosition(y), label: humanSpan(y, lang) }));
+---
+<nav class="rail" aria-label={t('time.scaleLabel')} data-rail>
+  <p class="visually-hidden">{t('time.scaleNote')}</p>
+  <div class="track" aria-hidden="true">
+    <span class="fill" data-rail-fill></span>
+    {
+      marks.map((m) => (
+        <span class="mark mono" style={`--p:${m.pos}`}>
+          {m.label}
+        </span>
+      ))
+    }
+  </div>
+  <ol class="ticks">
+    {
+      eras.map((era, i) => (
+        <li class="tick" style={`--p:${logPosition(era.data.startYearsAgo)};--c:${era.data.accentColor}`} data-rail-tick={i}>
+          <a href={`#${eraSlug(era)}`} class="tick-link">
+            <span class="dot" aria-hidden="true" />
+            <span class="tick-label mono">{era.data.title}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+  <span class="marker" data-rail-marker aria-hidden="true"></span>
+</nav>
+
+<style>
+  .rail {
+    --top: 16vh;
+    --h: 68vh;
+    position: fixed;
+    z-index: 5;
+    left: clamp(0.6rem, 2vw, 1.75rem);
+    top: var(--top);
+    height: var(--h);
+    width: 1.5rem;
+  }
+  .track {
+    position: absolute;
+    left: 0.7rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+  .fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    transform-origin: top;
+    transform: scaleY(var(--progress, 0));
+    background: var(--accent);
+    box-shadow: var(--glow-line);
+  }
+  .mark {
+    position: absolute;
+    left: 0.8rem;
+    top: calc(var(--p) * 100%);
+    transform: translateY(-50%);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-glow) var(--ease-expo-out);
+  }
+  .mark::before {
+    content: '';
+    display: inline-block;
+    width: 0.4rem;
+    height: 1px;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+    background: var(--text-faint);
+  }
+  .ticks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    inset: 0;
+  }
+  .tick {
+    position: absolute;
+    left: 0;
+    top: calc(var(--p) * 100%);
+    transform: translateY(-50%);
+  }
+  .tick-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.2rem 0;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    margin-left: calc(0.7rem - 2px);
+    border-radius: 50%;
+    background: var(--black);
+    border: 1px solid var(--text-faint);
+    transition: border-color var(--dur-glow) var(--ease-expo-out), background-color var(--dur-glow) var(--ease-expo-out),
+      box-shadow var(--dur-glow) var(--ease-expo-out);
+  }
+  .tick-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur-glow) var(--ease-expo-out), transform var(--dur-glow) var(--ease-expo-out);
+    pointer-events: none;
+  }
+  .tick-label {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 0.15rem 0.4rem;
+  }
+  .tick-link:hover .tick-label,
+  .tick-link:focus-visible .tick-label {
+    opacity: 1;
+    transform: none;
+  }
+  .tick-link:hover .dot,
+  .tick.is-active .dot {
+    border-color: var(--c);
+    background: var(--c);
+    box-shadow: 0 0 8px var(--c);
+  }
+  .rail:hover .mark {
+    opacity: 1;
+  }
+  .marker {
+    position: absolute;
+    left: calc(0.7rem - 4px);
+    top: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    box-shadow: var(--glow-line);
+    transform: translateY(calc(var(--marker, 0) * var(--h) - 50%));
+    opacity: 0;
+    transition: opacity var(--dur-glow) var(--ease-expo-out);
+  }
+  :global(.rail-on) .marker {
+    opacity: 1;
+  }
+  @media (max-width: 47.99rem) {
+    .rail {
+      left: auto;
+      right: 0.15rem;
+      --top: 22vh;
+      --h: 56vh;
+    }
+    .tick-label,
+    .mark {
+      display: none;
+    }
+  }
+</style>

@@ -26,6 +26,12 @@ keyEvents:
     title: "Newton's Principia"
     description: "The laws of motion and universal gravitation explained motion on Earth and in the heavens with the same mathematics."
 accentColor: "#FF8B7B"
+image:
+  src: "../../../assets/globe/renaisans.jpg"
+  alt: "Glowing vermilion globe with modern coastlines, facing Africa and Europe."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Encyclopaedia Britannica — Scientific Revolution"
     url: "https://www.britannica.com/science/Scientific-Revolution"

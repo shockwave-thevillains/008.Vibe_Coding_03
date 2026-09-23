@@ -36,9 +36,9 @@ export function counterUnit(value: number, mode: TimeMode, lang: Lang, isNow = f
 /** Tampilan counter (angka saja). Tahun SM ditampilkan positif. */
 export function counterText(value: number, mode: TimeMode, lang: Lang): string {
   if (mode === 'calendar') {
-    // Tahun kalender tanpa pemisah ribuan; tidak ada tahun 0 (1 SM → 1 M).
-    const y = value <= 0 ? 1 - value : value;
-    return String(Math.round(y));
+    // Tahun kalender tanpa pemisah ribuan. Nilai ≤ 0 berarti SM (mis. -800 → 800 SM);
+    // selisih satu tahun karena tidak adanya tahun 0 diabaikan, semua angka ini perkiraan.
+    return String(Math.abs(Math.round(value)));
   }
   return formatNumber(value, lang);
 }

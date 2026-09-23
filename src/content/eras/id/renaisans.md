@@ -26,6 +26,12 @@ keyEvents:
     title: "Principia Newton"
     description: "Hukum gerak dan gravitasi universal menjelaskan gerak benda di Bumi dan di langit dengan matematika yang sama."
 accentColor: "#FF8B7B"
+image:
+  src: "../../../assets/globe/renaisans.jpg"
+  alt: "Globe bercahaya merah vermilion dengan garis pantai modern, menghadap Afrika dan Eropa."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Encyclopaedia Britannica — Scientific Revolution"
     url: "https://www.britannica.com/science/Scientific-Revolution"

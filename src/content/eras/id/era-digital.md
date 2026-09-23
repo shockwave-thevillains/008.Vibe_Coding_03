@@ -26,6 +26,12 @@ keyEvents:
     title: "iPhone diperkenalkan"
     description: "Ponsel layar sentuh dengan peramban lengkap mempercepat era ponsel pintar dan internet di saku."
 accentColor: "#45F59E"
+image:
+  src: "../../../assets/globe/era-digital.jpg"
+  alt: "Globe bercahaya hijau terminal dengan garis pantai modern, titik lampu kota, dan busur koneksi di atas Asia."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Encyclopaedia Britannica — Computer: ENIAC"
     url: "https://www.britannica.com/technology/computer/ENIAC"

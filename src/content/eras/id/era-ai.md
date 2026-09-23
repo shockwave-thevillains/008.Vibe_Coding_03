@@ -26,6 +26,12 @@ keyEvents:
     title: "Nobel dan regulasi"
     description: "Nobel Fisika dan Kimia 2024 diberikan untuk jaringan saraf tiruan dan prediksi struktur protein; UU AI Uni Eropa berlaku 1 Agustus 2024."
 accentColor: "#D98BFF"
+image:
+  src: "../../../assets/globe/era-ai.jpg"
+  alt: "Globe bercahaya magenta redup dengan garis pantai modern, titik lampu kota, dan busur koneksi di atas Afrika dan Eropa."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Turing (1950), Computing Machinery and Intelligence, Mind"
     url: "https://doi.org/10.1093/mind/LIX.236.433"

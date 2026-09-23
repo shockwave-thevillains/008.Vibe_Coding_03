@@ -23,6 +23,12 @@ keyEvents:
     title: "Kepunahan akhir Trias"
     description: "Letusan besar Provinsi Magmatik Atlantik Tengah, saat Pangea mulai retak, dikaitkan dengan hilangnya banyak kelompok hewan. Dinosaurus bertahan."
 accentColor: "#F5A25D"
+image:
+  src: "../../../assets/globe/trias.jpg"
+  alt: "Globe bercahaya jingga dengan garis pantai hasil rekonstruksi sekitar 230 juta tahun lalu: hampir semua daratan menyatu sebagai Pangea."
+  credit: "Render Evolusi Dunia; rekonstruksi paleogeografi dari model lempeng Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

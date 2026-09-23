@@ -26,6 +26,12 @@ keyEvents:
     title: "Akhir Romawi Barat"
     description: "Odoacer menurunkan Romulus Augustulus, kaisar terakhir Kekaisaran Romawi Barat."
 accentColor: "#74D1C7"
+image:
+  src: "../../../assets/globe/klasik.jpg"
+  alt: "Globe bercahaya hijau patina dengan garis pantai modern, menghadap Afrika, Asia Barat, dan Samudra Hindia."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "World History Encyclopedia — Timeline: Athenian Democracy"
     url: "https://www.worldhistory.org/timeline/Athenian_Democracy/"

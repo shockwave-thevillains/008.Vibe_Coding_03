@@ -26,6 +26,12 @@ keyEvents:
     title: "Pelayaran Cheng Ho"
     description: "Tujuh ekspedisi armada Ming menyinggahi Asia Tenggara termasuk Jawa dan Sumatra, India, Arab, hingga Afrika Timur."
 accentColor: "#F2C75C"
+image:
+  src: "../../../assets/globe/abad-pertengahan.jpg"
+  alt: "Globe bercahaya emas dengan garis pantai modern, menghadap Samudra Hindia dan Asia."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "UNESCO World Heritage Centre — Borobudur Temple Compounds"
     url: "https://whc.unesco.org/en/list/592/"

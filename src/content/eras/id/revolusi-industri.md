@@ -23,6 +23,12 @@ keyEvents:
     title: "Letusan Krakatau"
     description: "Kabar letusan menyebar lewat telegraf dari Batavia ke seluruh dunia dalam hitungan jam, salah satu berita global pertama."
 accentColor: "#FFAE5E"
+image:
+  src: "../../../assets/globe/revolusi-industri.jpg"
+  alt: "Globe bercahaya jingga tungku dengan garis pantai modern, menghadap Afrika dan Eropa."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Science Museum Blog — James Watt and the separate condenser"
     url: "https://blog.sciencemuseum.org.uk/james-watt-and-the-separate-condenser/"

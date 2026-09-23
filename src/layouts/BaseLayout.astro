@@ -94,5 +94,19 @@ const motionVars = motionCssVars();
       <slot />
     </main>
     <Footer lang={lang} />
+    <script>
+      // Inisialisasi per halaman. GSAP & three.js hanya dimuat (dynamic import) di beranda.
+      let cleanup: (() => void) | undefined;
+      document.addEventListener('astro:page-load', async () => {
+        const root = document.querySelector<HTMLElement>('[data-home]');
+        if (!root) return;
+        const { initHome } = await import('../scripts/home');
+        cleanup = await initHome(root);
+      });
+      document.addEventListener('astro:before-swap', () => {
+        cleanup?.();
+        cleanup = undefined;
+      });
+    </script>
   </body>
 </html>

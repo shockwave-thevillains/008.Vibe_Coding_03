@@ -26,6 +26,12 @@ keyEvents:
     title: "The Ledi-Geraru jaw"
     description: "A jaw fragment from Ethiopia considered the oldest evidence of the genus Homo."
 accentColor: "#D7E36A"
+image:
+  src: "../../../assets/globe/neogen.jpg"
+  alt: "Glowing yellow-green globe with coastlines reconstructed for about 15 million years ago, centred on Africa."
+  credit: "Rendered for Evolusi Dunia; palaeogeographic reconstruction from the Müller et al. (2019) plate model, EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

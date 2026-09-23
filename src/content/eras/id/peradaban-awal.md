@@ -26,6 +26,12 @@ keyEvents:
     title: "Alfabet Fenisia"
     description: "Sistem 22 huruf konsonan ini menjadi leluhur banyak alfabet, termasuk Yunani dan Latin."
 accentColor: "#F09A6B"
+image:
+  src: "../../../assets/globe/peradaban-awal.jpg"
+  alt: "Globe bercahaya terakota dengan garis pantai modern, menghadap Afrika dan Asia Barat."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "The Metropolitan Museum of Art — The Origins of Writing"
     url: "https://www.metmuseum.org/essays/the-origins-of-writing"

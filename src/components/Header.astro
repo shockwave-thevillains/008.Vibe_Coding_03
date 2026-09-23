@@ -35,6 +35,17 @@ const t = useTranslations(lang);
     z-index: 50;
     pointer-events: none;
   }
+  /* Tabir gelap tipis agar teks yang lewat di bawah header tidak bertabrakan. */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -2.5rem 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.92) 40%, transparent);
+    pointer-events: none;
+  }
+  .bar {
+    position: relative;
+  }
   .bar {
     display: flex;
     align-items: center;

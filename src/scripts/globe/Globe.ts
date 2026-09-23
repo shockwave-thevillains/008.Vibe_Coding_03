@@ -15,6 +15,16 @@ export interface GlobeOptions {
   /** Mode still: tanpa animasi waktu, untuk render gambar statis */
   still?: boolean;
   accent?: string;
+  /** Elemen penerima gestur seret (default: canvas). */
+  dragTarget?: HTMLElement;
+  /** Tata letak: pusat globe (fraksi layar) dan diameter (px) untuk ukuran kanvas w×h. */
+  layout?: (w: number, h: number) => GlobeLayout;
+}
+
+export interface GlobeLayout {
+  x: number;
+  y: number;
+  diameter: number;
 }
 
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
@@ -219,10 +229,13 @@ export class Globe {
   private intro = 1;
   private outro = 0;
   private centerX = 0.5;
+  private centerY = 0.5;
+  private layoutFn?: (w: number, h: number) => GlobeLayout;
+  private layoutMix = 0; // 0 = tata letak normal, 1 = tengah layar (outro)
   private raf = 0;
   private running = false;
   private visible = true;
-  private clock = new THREE.Clock();
+  private timer = new THREE.Timer();
   private time = 0;
   private dragging = false;
   private lastInteract = -Infinity;
@@ -239,6 +252,7 @@ export class Globe {
 
   constructor(opts: GlobeOptions) {
     this.lite = !!opts.lite;
+    this.layoutFn = opts.layout;
     this.still = !!opts.still;
     this.states = opts.states;
     const canvas = opts.canvas;
@@ -415,7 +429,7 @@ export class Globe {
     this.resizeObs = new ResizeObserver(() => this.resize());
     this.resizeObs.observe(canvas);
     document.addEventListener('visibilitychange', this.onVisibility);
-    if (!this.still) this.bindDrag(canvas);
+    if (!this.still) this.bindDrag(opts.dragTarget ?? canvas);
   }
 
   private atmosphere(r: number, side: THREE.Side, inside: number, power: number, strength: number) {
@@ -509,7 +523,7 @@ export class Globe {
     attr.needsUpdate = true;
   }
 
-  private bindDrag(canvas: HTMLCanvasElement) {
+  private bindDrag(canvas: HTMLElement) {
     let lastX = 0;
     let lastY = 0;
     let lastT = 0;
@@ -584,12 +598,22 @@ export class Globe {
   /** 0..1 — globe menjauh sampai tinggal satu titik cahaya. */
   setOutro(v: number) {
     this.outro = THREE.MathUtils.clamp(v, 0, 1);
-    this.start();
+    if (this.visible) this.start();
+    else this.renderOnce();
   }
 
-  /** Posisi horizontal pusat globe dalam fraksi lebar layar. */
-  setCenter(x: number) {
+  /** Posisi pusat globe dalam fraksi layar. */
+  setCenter(x: number, y = 0.5) {
     this.centerX = x;
+    this.centerY = y;
+    this.resize();
+  }
+
+  /** 0 = tata letak normal, 1 = globe di tengah layar (untuk outro). */
+  setLayoutMix(v: number) {
+    const next = THREE.MathUtils.clamp(v, 0, 1);
+    if (next === this.layoutMix) return;
+    this.layoutMix = next;
     this.resize();
   }
 
@@ -597,16 +621,34 @@ export class Globe {
     this.spin.rotation.y = y;
   }
 
+  private size = { w: 0, h: 0 };
+
   resize() {
     const canvas = this.renderer.domElement;
     const w = canvas.clientWidth || 1;
     const h = canvas.clientHeight || 1;
-    this.renderer.setSize(w, h, false);
-    this.composer?.setSize(w, h);
+    if (w !== this.size.w || h !== this.size.h) {
+      this.size = { w, h };
+      this.renderer.setSize(w, h, false);
+      this.composer?.setSize(w, h);
+    }
     this.camera.aspect = w / h;
-    // Pastikan globe muat di layar sempit: mundurkan kamera bila tinggi > lebar.
-    this.camera.position.z = w < h ? 5.2 * Math.min(1.9, (h / w) * 0.85) : 5.2;
-    this.camera.setViewOffset(w, h, (0.5 - this.centerX) * w, 0, w, h);
+    let x = this.centerX;
+    let y = this.centerY;
+    let diameter = Math.min(0.72 * h, 0.9 * w);
+    if (this.layoutFn) {
+      const l = this.layoutFn(w, h);
+      x = l.x;
+      y = l.y;
+      diameter = l.diameter;
+    }
+    const m = this.layoutMix;
+    x += (0.5 - x) * m;
+    y += (0.5 - y) * m;
+    // jarak kamera agar diameter globe (jari-jari 1) = diameter px
+    const tanHalf = Math.tan((this.camera.fov * DEG) / 2);
+    this.camera.position.z = h / (diameter * tanHalf);
+    this.camera.setViewOffset(w, h, (0.5 - x) * w, (0.5 - y) * h, w, h);
     this.camera.updateProjectionMatrix();
     this.renderOnce();
   }
@@ -617,10 +659,12 @@ export class Globe {
       return;
     }
     this.running = true;
-    this.clock.getDelta();
-    const loop = () => {
+    this.timer.update();
+    const loop = (ts?: number) => {
       if (!this.running) return;
-      const dt = Math.min(this.clock.getDelta(), 0.05);
+      this.timer.update(ts);
+      // waktu nyata (dibatasi 0,5 dtk) agar transisi tetap tepat waktu di perangkat lambat
+      const dt = Math.min(this.timer.getDelta(), 0.5);
       const settled = this.tick(dt);
       this.draw();
       if (settled) {
@@ -641,28 +685,32 @@ export class Globe {
   setActive(active: boolean) {
     this.visible = active && document.visibilityState === 'visible';
     if (this.visible) this.start();
-    else this.stop();
+    else {
+      this.stop();
+      this.renderOnce();
+    }
   }
 
   private tick(dt: number): boolean {
     this.time += dt;
+    const rotDt = Math.min(dt, 0.05);
     const u = this.pointMat.uniforms;
     // perpindahan keadaan & warna
     if (this.mixT < 1) this.mixT = Math.min(1, this.mixT + dt / (duration.accent / 1000));
     if (this.colorT < 1) {
       this.colorT = Math.min(1, this.colorT + dt / (duration.accent / 1000));
-      this.color.copy(this.fromColor).lerp(this.targetColor, easeInOut(this.colorT));
+      this.color.copy(this.fromColor).lerpHSL(this.targetColor, easeInOut(this.colorT));
     }
     this.citiesOn += (this.citiesTarget - this.citiesOn) * Math.min(1, dt * 2.5);
 
     // rotasi: otomatis kecuali sedang/baru saja di-drag; inersia setelah dilepas
     const idle = this.time - this.lastInteract > globeTokens.resumeAfter;
     if (!this.dragging) {
-      this.spin.rotation.y += this.velocity * dt;
-      this.velocity *= Math.pow(0.04, dt);
+      this.spin.rotation.y += this.velocity * rotDt;
+      this.velocity *= Math.pow(0.04, rotDt);
       if (idle) {
-        this.spin.rotation.y += globeTokens.spin * dt;
-        this.pitch *= Math.pow(0.3, dt);
+        this.spin.rotation.y += globeTokens.spin * rotDt;
+        this.pitch *= Math.pow(0.3, rotDt);
       }
     }
     this.spin.rotation.x = this.pitch;
@@ -720,18 +768,5 @@ export class Globe {
     });
     this.composer?.dispose();
     this.renderer.dispose();
-  }
-}
-
-/** Uji dukungan WebGL tanpa membuat konteks permanen. */
-export function hasWebGL(): boolean {
-  try {
-    const c = document.createElement('canvas');
-    const gl = c.getContext('webgl2') || c.getContext('webgl');
-    if (!gl) return false;
-    (gl as WebGLRenderingContext).getExtension('WEBGL_lose_context')?.loseContext();
-    return true;
-  } catch {
-    return false;
   }
 }

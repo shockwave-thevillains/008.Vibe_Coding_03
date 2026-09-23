@@ -23,6 +23,12 @@ keyEvents:
     title: "Antarctica freezes"
     description: "At the Eocene–Oligocene transition, large ice sheets formed on Antarctica. Earth shifted from a greenhouse to an icehouse world."
 accentColor: "#6FE3C1"
+image:
+  src: "../../../assets/globe/paleogen.jpg"
+  alt: "Glowing mint globe with coastlines reconstructed for about 50 million years ago, as India nears Asia."
+  credit: "Rendered for Evolusi Dunia; palaeogeographic reconstruction from the Müller et al. (2019) plate model, EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

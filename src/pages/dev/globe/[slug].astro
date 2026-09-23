@@ -21,7 +21,7 @@ const rot = stillRotationBySlug[slug] ?? 4.4;
 <html lang="id" style="background:#000">
   <head><meta charset="utf-8" /><title>globe {slug}</title></head>
   <body style="margin:0;background:#000">
-    <canvas id="c" style="width:1200px;height:1200px;display:block" data-url={paleoUrl} data-ma={ma} data-accent={era.data.accentColor} data-cities={cities ? '1' : '0'} data-rot={rot}></canvas>
+    <canvas id="c" style="width:1000px;height:1000px;display:block" data-url={paleoUrl} data-ma={ma} data-accent={era.data.accentColor} data-cities={cities ? '1' : '0'} data-rot={rot}></canvas>
     <script>
       import { Globe } from '../../../scripts/globe/Globe';
       import { decodeGlobe } from '../../../scripts/globe/data';

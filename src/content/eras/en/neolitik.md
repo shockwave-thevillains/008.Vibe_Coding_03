@@ -23,6 +23,12 @@ keyEvents:
     title: "Rice and pottery on Sulawesi"
     description: "In West Sulawesi's Karama valley, rice phytoliths and red-slipped pottery mark the arrival of Neolithic culture."
 accentColor: "#EBC47A"
+image:
+  src: "../../../assets/globe/neolitik.jpg"
+  alt: "Glowing wheat-gold globe with modern coastlines, facing western Asia and Africa."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "UNESCO World Heritage Centre — Göbekli Tepe"
     url: "https://whc.unesco.org/en/list/1572"

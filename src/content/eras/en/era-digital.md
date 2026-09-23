@@ -26,6 +26,12 @@ keyEvents:
     title: "The iPhone is unveiled"
     description: "A touchscreen phone with a full web browser sped up the arrival of smartphones and the internet in your pocket."
 accentColor: "#45F59E"
+image:
+  src: "../../../assets/globe/era-digital.jpg"
+  alt: "Glowing terminal-green globe with modern coastlines, city lights and connection arcs over Asia."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Encyclopaedia Britannica — Computer: ENIAC"
     url: "https://www.britannica.com/technology/computer/ENIAC"

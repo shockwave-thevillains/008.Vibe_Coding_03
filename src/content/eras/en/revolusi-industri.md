@@ -23,6 +23,12 @@ keyEvents:
     title: "The eruption of Krakatau"
     description: "Telegraph lines carried the news from Batavia around the world within hours, one of the first truly global news stories."
 accentColor: "#FFAE5E"
+image:
+  src: "../../../assets/globe/revolusi-industri.jpg"
+  alt: "Glowing furnace-orange globe with modern coastlines, facing Africa and Europe."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Science Museum Blog — James Watt and the separate condenser"
     url: "https://blog.sciencemuseum.org.uk/james-watt-and-the-separate-condenser/"

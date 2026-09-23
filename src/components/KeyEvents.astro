@@ -10,7 +10,7 @@ const { heading, events } = Astro.props;
   <ol class="timeline">
     {
       events.map((e) => (
-        <li class="event" data-reveal>
+        <li class="event">
           <p class="when mono">{e.when}</p>
           <h3 class="title">{e.title}</h3>
           <p class="desc">{e.description}</p>

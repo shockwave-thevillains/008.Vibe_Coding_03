@@ -23,6 +23,12 @@ keyEvents:
     title: "Antarktika membeku"
     description: "Di peralihan Eosen–Oligosen, lapisan es besar terbentuk di Antarktika. Bumi beralih dari dunia rumah kaca ke dunia berkutub es."
 accentColor: "#6FE3C1"
+image:
+  src: "../../../assets/globe/paleogen.jpg"
+  alt: "Globe bercahaya hijau mint dengan garis pantai rekonstruksi sekitar 50 juta tahun lalu, saat India mendekati Asia."
+  credit: "Render Evolusi Dunia; rekonstruksi paleogeografi dari model lempeng Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

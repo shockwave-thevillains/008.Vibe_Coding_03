@@ -26,6 +26,12 @@ keyEvents:
     title: "Apollo 11"
     description: "Neil Armstrong and Buzz Aldrin became the first people to land on the Moon."
 accentColor: "#7AB8FF"
+image:
+  src: "../../../assets/globe/abad-20.jpg"
+  alt: "Glowing blue globe with modern coastlines, facing the Atlantic and the Americas."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Los Alamos National Laboratory — The Trinity test"
     url: "https://www.lanl.gov/media/publications/national-security-science/0720-the-trinity-test"

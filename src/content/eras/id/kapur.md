@@ -23,6 +23,12 @@ keyEvents:
     title: "Tumbukan Chicxulub"
     description: "Asteroid selebar sekitar 10 km menghantam Semenanjung Yucatán, meninggalkan kawah ±180 km. Sekitar 75% spesies punah, termasuk semua dinosaurus non-burung."
 accentColor: "#FF7A59"
+image:
+  src: "../../../assets/globe/kapur.jpg"
+  alt: "Globe bercahaya merah bara dengan garis pantai rekonstruksi sekitar 100 juta tahun lalu; Afrika dan Amerika Selatan sudah terpisah."
+  credit: "Render Evolusi Dunia; rekonstruksi paleogeografi dari model lempeng Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

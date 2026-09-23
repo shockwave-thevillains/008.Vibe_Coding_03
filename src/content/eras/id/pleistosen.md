@@ -23,6 +23,12 @@ keyEvents:
     title: "Puncak Zaman Es Terakhir"
     description: "Muka laut sekitar 120 m lebih rendah; Sumatra, Jawa, Kalimantan, dan Semenanjung Malaya menyatu sebagai daratan Sunda."
 accentColor: "#86D4FF"
+image:
+  src: "../../../assets/globe/pleistosen.jpg"
+  alt: "Globe bercahaya biru es dengan garis pantai modern, menghadap Asia Tenggara, Nusantara, dan Australia."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "International Commission on Stratigraphy — International Chronostratigraphic Chart v2026/06"
     url: "https://stratigraphy.org/chart"

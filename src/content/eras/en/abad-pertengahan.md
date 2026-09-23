@@ -26,6 +26,12 @@ keyEvents:
     title: "The voyages of Zheng He"
     description: "Seven Ming fleet expeditions called at Southeast Asia, including Java and Sumatra, then India, Arabia and East Africa."
 accentColor: "#F2C75C"
+image:
+  src: "../../../assets/globe/abad-pertengahan.jpg"
+  alt: "Glowing gold globe with modern coastlines, facing the Indian Ocean and Asia."
+  credit: "Rendered for Evolusi Dunia; present-day coastlines from Müller et al. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "UNESCO World Heritage Centre — Borobudur Temple Compounds"
     url: "https://whc.unesco.org/en/list/592/"

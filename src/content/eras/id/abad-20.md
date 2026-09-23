@@ -26,6 +26,12 @@ keyEvents:
     title: "Apollo 11"
     description: "Neil Armstrong dan Buzz Aldrin menjadi manusia pertama yang mendarat di Bulan."
 accentColor: "#7AB8FF"
+image:
+  src: "../../../assets/globe/abad-20.jpg"
+  alt: "Globe bercahaya biru dengan garis pantai modern, menghadap Samudra Atlantik dan benua Amerika."
+  credit: "Render Evolusi Dunia; garis pantai modern dari data Müller dkk. (2019), EarthByte/GPlates"
+  license: "CC BY-SA 4.0"
+  sourceUrl: "https://github.com/GPlates/pygplates-tutorials/tree/master/data/Muller_etal_2019_PlateMotionModel_v2.0_Tectonics"
 sources:
   - title: "Los Alamos National Laboratory — The Trinity test"
     url: "https://www.lanl.gov/media/publications/national-security-science/0720-the-trinity-test"
