@@ -38,7 +38,6 @@ export async function initHome(root: HTMLElement): Promise<Cleanup> {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const eras = [...root.querySelectorAll<HTMLElement>('[data-era]')];
   const ticks = [...root.querySelectorAll<HTMLElement>('[data-rail-tick]')];
-  const rail = root.querySelector<HTMLElement>('[data-rail]');
   const railFill = root.querySelector<HTMLElement>('[data-rail-fill]');
   const railMarker = root.querySelector<HTMLElement>('[data-rail-marker]');
   const tickPos = ticks.map((t) => parseFloat(getComputedStyle(t).getPropertyValue('--p')) || 0);

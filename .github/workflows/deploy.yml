@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Deploy setiap push ke branch main
+  push:
+    branches: [main]
+  # Verifikasi build (tanpa deploy) untuk pull request ke main
+  pull_request:
+    branches: [main]
+  # Jalankan manual dari tab Actions
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Paket `playwright` (devDependency) hanya dipakai skrip lokal render:globe.
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Install, build, and upload site
+        uses: withastro/action@v6
+        with:
+          # Astro 7 membutuhkan Node >= 22.12 (lihat "engines" di package.json)
+          node-version: 22
+      - name: Check internal links in dist/
+        run: node scripts/check-links.mjs
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

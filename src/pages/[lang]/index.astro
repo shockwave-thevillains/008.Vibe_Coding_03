@@ -76,7 +76,7 @@ const sourceCount = new Set(eras.flatMap((e) => e.data.sources.map((s) => s.url)
           const from = counterValue(d.startYearsAgo, mode);
           const to = counterValue(d.endYearsAgo, mode);
           const prev = eras[i - 1];
-          const stateIdx = GLOBE_TIMES.indexOf(globeStateFor(slug));
+          const stateIdx = (GLOBE_TIMES as readonly number[]).indexOf(globeStateFor(slug));
           const toNow = d.endYearsAgo === 0;
           return (
             <li

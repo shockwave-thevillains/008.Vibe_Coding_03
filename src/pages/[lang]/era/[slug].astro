@@ -14,7 +14,7 @@ import { humanSpan } from '../../../lib/time';
 import { pageTransition, sharedTransition } from '../../../styles/motion';
 
 export async function getStaticPaths() {
-  const paths = [];
+  const paths: { params: { lang: Lang; slug: string }; props: Props }[] = [];
   for (const lang of langs) {
     const eras = await getEras(lang);
     eras.forEach((era, i) => {
