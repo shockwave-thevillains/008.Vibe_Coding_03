@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shockwave-thevillains.github.io/008.Vibe_Coding_03/sitemap-index.xml

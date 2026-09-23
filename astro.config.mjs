@@ -19,6 +19,10 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
+  vite: {
+    // three.js (~570 KB, ~145 KB gzip) sengaja satu chunk dan hanya dimuat di beranda.
+    build: { chunkSizeWarningLimit: 700 },
+  },
   integrations: [
     sitemap({
       i18n: {

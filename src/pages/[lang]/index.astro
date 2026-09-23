@@ -47,8 +47,6 @@ const sourceCount = new Set(eras.flatMap((e) => e.data.sources.map((s) => s.url)
     </div>
     <div class="globe-drag" data-globe-drag title={t('globe.drag')} aria-hidden="true"></div>
 
-    <TimeRail lang={lang} eras={eras} />
-
     <section class="intro" data-intro aria-labelledby="home-title">
       <div class="intro-inner wrap">
         <p class="eyebrow" data-intro-item>{t('home.eyebrow')}</p>
@@ -163,6 +161,8 @@ const sourceCount = new Set(eras.flatMap((e) => e.data.sources.map((s) => s.url)
         })
       }
     </ol>
+
+    <TimeRail lang={lang} eras={eras} />
 
     <section class="outro" data-outro aria-labelledby="outro-title">
       <div class="outro-inner wrap">
@@ -418,7 +418,8 @@ const sourceCount = new Set(eras.flatMap((e) => e.data.sources.map((s) => s.url)
   .era-still :global(img) {
     width: 100%;
     height: auto;
-    border-radius: 50%;
+    -webkit-mask-image: radial-gradient(circle closest-side, #000 72%, transparent 100%);
+    mask-image: radial-gradient(circle closest-side, #000 72%, transparent 100%);
   }
   :global(.globe-static) .era-still {
     display: block;

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { useTranslations } from '../i18n/utils';
+import { homeUrl, erasIndexUrl } from '../lib/url';
+
+const id = useTranslations('id');
+const en = useTranslations('en');
+---
+<BaseLayout
+  lang="id"
+  title="404"
+  description={id('notFound.body')}
+  alternates={{ id: homeUrl('id'), en: homeUrl('en') }}
+  noindex
+>
+  <section class="nf wrap">
+    <p class="code mono glow" aria-hidden="true">404</p>
+    <div class="cols">
+      <div class="col">
+        <h1 class="display">{id('notFound.title')}</h1>
+        <p>{id('notFound.body')}</p>
+        <p class="links">
+          <a class="line-link" href={homeUrl('id')}>{id('notFound.home')}</a>
+          <a class="line-link" href={erasIndexUrl('id')}>{id('nav.eras')}</a>
+        </p>
+      </div>
+      <div class="col" lang="en">
+        <h2 class="display">{en('notFound.title')}</h2>
+        <p>{en('notFound.body')}</p>
+        <p class="links">
+          <a class="line-link" href={homeUrl('en')} hreflang="en">{en('notFound.home')}</a>
+          <a class="line-link" href={erasIndexUrl('en')} hreflang="en">{en('nav.eras')}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    min-height: 90svh;
+    display: grid;
+    align-content: center;
+    gap: var(--space-l);
+    padding-top: 8rem;
+  }
+  .code {
+    font-size: clamp(5rem, 3rem + 14vw, 16rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .cols {
+    display: grid;
+    gap: var(--space-l);
+  }
+  @media (min-width: 56rem) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .col + .col {
+      border-left: 1px solid var(--line);
+      padding-left: var(--space-l);
+    }
+  }
+  .col {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  h1,
+  h2 {
+    font-size: var(--step-3);
+  }
+  .col p {
+    color: var(--text-muted);
+    max-width: 40ch;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+</style>

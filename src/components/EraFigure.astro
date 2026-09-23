@@ -38,8 +38,8 @@ const t = useTranslations(lang);
   .frame {
     position: relative;
     aspect-ratio: 1;
-    border-radius: 50%;
-    overflow: hidden;
+    -webkit-mask-image: radial-gradient(circle closest-side, #000 72%, transparent 100%);
+    mask-image: radial-gradient(circle closest-side, #000 72%, transparent 100%);
   }
   .frame :global(img) {
     width: 100%;

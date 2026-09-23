@@ -1,0 +1,38 @@
+---
+/** DEV-ONLY: komposisi gambar Open Graph (1200×630), dipotret ke public/og.png. */
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import globe from '../../../assets/globe/trias.jpg';
+export function getStaticPaths() {
+  return import.meta.env.PROD ? [] : [{ params: { v: 'default' } }];
+}
+---
+<!doctype html>
+<html lang="id">
+  <head><meta charset="utf-8" /><title>og</title></head>
+  <body>
+    <main id="og">
+      <img src={globe.src} alt="" />
+      <div class="t">
+        <p class="eyebrow">Sebuah atlas waktu · An atlas of time</p>
+        <h1>Evolusi<br /><em>Dunia</em></h1>
+        <p class="sub">Dari dinosaurus pertama sampai era AI</p>
+        <p class="num">251.902.000 <span>tahun lalu → kini</span></p>
+      </div>
+    </main>
+  </body>
+</html>
+<style is:global>
+  html, body { margin: 0; background: #000; }
+  #og { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #000; color: #edeae3; }
+  #og img { position: absolute; right: -90px; top: -60px; width: 760px; height: 760px; }
+  .t { position: absolute; left: 72px; top: 84px; display: grid; gap: 18px; }
+  .eyebrow { margin: 0; font: 400 16px 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #a9a59c; }
+  h1 { margin: 0; font: 500 132px/0.9 'Bodoni Moda Variable', serif; letter-spacing: -0.02em; }
+  h1 em { padding-left: 90px; text-shadow: 0 0 .45em rgba(245,162,93,.35); }
+  .sub { margin: 8px 0 0; font: 400 26px 'IBM Plex Sans', sans-serif; }
+  .num { margin: 0; font: 400 38px 'IBM Plex Mono', monospace; color: #F5A25D; text-shadow: 0 0 .35em rgba(245,162,93,.55); }
+  .num span { font-size: 16px; letter-spacing: .12em; text-transform: uppercase; color: #a9a59c; text-shadow: none; }
+</style>
