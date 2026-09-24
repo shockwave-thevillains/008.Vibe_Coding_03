@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Deploy setiap push ke branch main
+  # Deploy setiap push ke branch main (atau branch kerja saat ini, selama belum di-rename jadi main)
   push:
-    branches: [main]
+    branches: [main, claude/great-franklin-7n6rne]
   # Verifikasi build (tanpa deploy) untuk pull request ke main
   pull_request:
     branches: [main]
